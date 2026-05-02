@@ -1,4 +1,4 @@
-Team Task Manager (Ethara AI Project)
+Team Task Manager (Ethara AI Project) App Url : https://ethara-ai-project-mocha.vercel.app/admin-login
 
 1. Project Overview
 -------------------
