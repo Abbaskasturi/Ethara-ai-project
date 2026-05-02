@@ -239,8 +239,67 @@ const addnewemployeeintoproject = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+const getallemployees = async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+
+        const employees = await db
+            .collection("employeescollection")
+            .find({})
+            .toArray();
+
+        if (employees.length === 0) {
+            return res.status(404).json({
+                message: "No employees found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Employees fetched successfully",
+            data: employees
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+}; 
+
+const allprojects = async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+
+        const projects = await db
+            .collection("projects")
+            .find({})
+            .toArray();
+
+        if (projects.length === 0) {
+            return res.status(404).json({
+                message: "No projects found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Projects fetched successfully",
+            data: projects
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+
 exports.adminlogin = adminlogin;
 exports.adminassigntasks = adminassigntasks;
 exports.deleteemployee = deleteemployee;
 exports.employeeupdation = employeeupdation;
 exports.addnewemployeeintoproject = addnewemployeeintoproject;
+exports.getallemployees = getallemployees; 
+exports.allprojects = allprojects;  
