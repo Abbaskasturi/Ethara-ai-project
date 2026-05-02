@@ -68,3 +68,5 @@ The Team Task Manager is a full-stack web application designed to streamline pro
 6. Install dependencies: `npm install`
 7. Start the development server: `npm run dev`
 8. The application will be running at http://localhost:5173
+9. employee login details: `employeefullname: reeyansh, employeeid : E102`
+10. admin login details: `adminemail: ethara.ai@gmail.com, password: ethara12345`
