@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AllEmployees from '../AllEmployees';
 import AllProjects from '../AllProjects';
 import './index.css';
@@ -29,7 +29,7 @@ const AdminDashboard = () => {
 
   const [loading, setLoading] = useState(false);
   
-  // Separate states for error and success messages
+  
   const [employeeError, setEmployeeError] = useState('');
   const [employeeSuccess, setEmployeeSuccess] = useState('');
   
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
       setEmployeeSuccess(data.message || 'Employee added successfully!');
       alert(data.message || 'Employee added successfully!');
       
-      // Reset form
+      
       setFormData({
         name: '',
         contact: '',
