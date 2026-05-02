@@ -87,4 +87,57 @@ const projectstatus = async (req, res) => {
     }
 };
 
-module.exports = {addemployee, employeeslogin, projectstatus}; 
+const fetchalltasks = async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+
+        const { empid } = req.user;
+
+        if (!empid) {
+            return res.status(400).json({
+                message: "empid not found in token"
+            });
+        }
+
+    
+        const tasks = await db.collection("projects").aggregate([
+            { $unwind: "$tasks" },
+            {
+                $match: {
+                    "tasks.empid": empid
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    projectName: 1,
+                    name: "$tasks.name",
+                    empid: "$tasks.empid",
+                    role: "$tasks.role",
+                    task: "$tasks.task",
+                    deadline: "$tasks.deadline",
+                    status: "$tasks.status",
+                    createdAt: "$tasks.createdAt"
+                }
+            }
+        ]).toArray();
+
+        if (tasks.length === 0) {
+            return res.status(404).json({
+                message: "No tasks found for this employee"
+            });
+        }
+
+        res.status(200).json({
+            message: "Tasks fetched successfully",
+            data: tasks
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+module.exports = {addemployee, employeeslogin, projectstatus, fetchalltasks}; 
