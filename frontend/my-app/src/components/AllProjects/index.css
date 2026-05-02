@@ -1,0 +1,267 @@
+.projects-container {
+  padding: 10px 0;
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.project-list-item {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.project-header:hover {
+  background-color: #e9ecef;
+}
+
+.project-name {
+  margin: 0;
+  color: #343a40;
+  font-size: 1.1rem;
+}
+
+.view-details-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.project-header:hover .view-details-btn {
+  color: #0056b3;
+}
+
+.project-details {
+  padding: 20px;
+  border-top: 1px solid #dee2e6;
+  background-color: #fff;
+}
+
+.project-employees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.project-employee-card {
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.emp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+}
+
+.emp-header h4 {
+  margin: 0;
+  color: #17a2b8;
+  font-size: 1.05rem;
+  text-transform: capitalize;
+}
+
+.emp-role {
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 3px 6px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.emp-details p {
+  margin: 6px 0;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+/* NEW STYLES FOR CRUD ACTIONS */
+.project-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.project-actions-bar h4 {
+  margin: 0;
+  color: #343a40;
+}
+
+.add-emp-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.add-emp-btn:hover {
+  background-color: #218838;
+}
+
+.emp-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background-color: #dee2e6;
+}
+
+.inline-form {
+  background-color: #f1f3f5;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.inline-form h5 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #007bff;
+  font-size: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.form-grid-small {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.inline-form input, .inline-form select,
+.form-grid-small input, .form-grid-small select {
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #0069d9;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+.save-btn.small, .cancel-btn.small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-badge.in-progress, .status-badge.in-progress {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.status-badge.completed {
+  background-color: #28a745;
+  color: white;
+}
+
+.edit-card {
+  border-color: #007bff;
+  box-shadow: 0 0 0 1px #007bff;
+}

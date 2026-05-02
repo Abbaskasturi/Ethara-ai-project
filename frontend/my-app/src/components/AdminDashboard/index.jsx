@@ -1,19 +1,40 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import AllEmployees from '../AllEmployees';
+import AllProjects from '../AllProjects';
 import './index.css';
 
 const AdminDashboard = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showEmployees, setShowEmployees] = useState(false);
+  const [showProjects, setShowProjects] = useState(true);
+  const [showCreateProject, setShowCreateProject] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
     empid: '',
     role: ''
   });
+
+  const [projectFormData, setProjectFormData] = useState({
+    projectName: '',
+    name: '',
+    empid: '',
+    role: '',
+    task: '',
+    deadline: ''
+  });
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  
+  // Separate states for error and success messages
+  const [employeeError, setEmployeeError] = useState('');
+  const [employeeSuccess, setEmployeeSuccess] = useState('');
+  
+  const [projectError, setProjectError] = useState('');
+  const [projectSuccess, setProjectSuccess] = useState('');
 
   const navigate = useNavigate();
   const adminEmail = localStorage.getItem('adminEmail') || 'Admin';
@@ -34,21 +55,28 @@ const AdminDashboard = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
-    setSuccess('');
+    setEmployeeError('');
+    setEmployeeSuccess('');
+  };
+
+  const handleProjectChange = (e) => {
+    const { name, value } = e.target;
+    setProjectFormData(prev => ({ ...prev, [name]: value }));
+    setProjectError('');
+    setProjectSuccess('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.name || !formData.contact || !formData.empid || !formData.role) {
-      setError('All fields are required');
+      setEmployeeError('All fields are required');
       return;
     }
 
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setEmployeeError('');
+    setEmployeeSuccess('');
 
     try {
       const response = await fetch('https://ethara-ai-project.onrender.com/auth/addemployees', {
@@ -66,7 +94,7 @@ const AdminDashboard = () => {
         throw new Error(data.message || 'Failed to add employee');
       }
 
-      setSuccess(data.message || 'Employee added successfully!');
+      setEmployeeSuccess(data.message || 'Employee added successfully!');
       alert(data.message || 'Employee added successfully!');
       
       // Reset form
@@ -80,7 +108,57 @@ const AdminDashboard = () => {
       
     } catch (err) {
       console.error(err);
-      setError(err.message || 'An error occurred while adding the employee');
+      setEmployeeError(err.message || 'An error occurred while adding the employee');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateProjectSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!projectFormData.projectName || !projectFormData.name || !projectFormData.empid || !projectFormData.role || !projectFormData.task || !projectFormData.deadline) {
+      setProjectError('All fields are required');
+      return;
+    }
+
+    setLoading(true);
+    setProjectError('');
+    setProjectSuccess('');
+
+    try {
+      const response = await fetch('https://ethara-ai-project.onrender.com/auth/admintasks', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('jwt')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(projectFormData)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create project');
+      }
+
+      setProjectSuccess(data.message || 'Project created successfully!');
+      alert(data.message || 'Project created successfully!');
+      
+      // Reset form
+      setProjectFormData({
+        projectName: '',
+        name: '',
+        empid: '',
+        role: '',
+        task: '',
+        deadline: ''
+      });
+      setShowCreateProject(false);
+      
+    } catch (err) {
+      console.error(err);
+      setProjectError(err.message || 'An error occurred while creating project');
     } finally {
       setLoading(false);
     }
@@ -100,20 +178,162 @@ const AdminDashboard = () => {
       <main className="admin-main">
         <div className="admin-actions">
           <button 
+            className="action-btn view-btn"
+            onClick={() => {
+              setShowCreateProject(!showCreateProject);
+              if (!showCreateProject) {
+                setShowForm(false);
+                setShowEmployees(false);
+                setShowProjects(false);
+              }
+            }}
+          >
+            {showCreateProject ? 'Cancel' : 'Create Project'}
+          </button>
+          <button 
             className="action-btn"
-            onClick={() => setShowForm(!showForm)}
+            onClick={() => {
+              setShowForm(!showForm);
+              if (!showForm) {
+                setShowCreateProject(false);
+                setShowEmployees(false);
+                setShowProjects(false);
+              }
+            }}
           >
             {showForm ? 'Cancel' : 'Add New Employee'}
           </button>
+          <button 
+            className="action-btn view-btn"
+            onClick={() => {
+              setShowEmployees(!showEmployees);
+              if (!showEmployees) {
+                setShowForm(false);
+                setShowCreateProject(false);
+                setShowProjects(false);
+              }
+            }}
+          >
+            {showEmployees ? 'Hide Employees' : 'View All Employees'}
+          </button>
+          <button 
+            className="action-btn view-btn"
+            onClick={() => {
+              setShowProjects(!showProjects);
+              if (!showProjects) {
+                setShowForm(false);
+                setShowCreateProject(false);
+                setShowEmployees(false);
+              }
+            }}
+          >
+            {showProjects ? 'Hide Company Dashboard' : 'Company Dashboard'}
+          </button>
         </div>
+
+        {showCreateProject && (
+          <div className="form-container">
+            <h3>Create New Project</h3>
+            
+            <form onSubmit={handleCreateProjectSubmit} className="add-employee-form">
+              {projectError && <div className="alert error-alert">{projectError}</div>}
+              {projectSuccess && <div className="alert success-alert">{projectSuccess}</div>}
+
+              <div className="input-group">
+                <label htmlFor="projectName">Project Name</label>
+                <input
+                  type="text"
+                  id="projectName"
+                  name="projectName"
+                  value={projectFormData.projectName}
+                  onChange={handleProjectChange}
+                  disabled={loading}
+                  placeholder="e.g. e-commerces-web"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="proj_name">Employee Name</label>
+                <input
+                  type="text"
+                  id="proj_name"
+                  name="name"
+                  value={projectFormData.name}
+                  onChange={handleProjectChange}
+                  disabled={loading}
+                  placeholder="e.g. Abbas"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="proj_empid">Employee ID</label>
+                <input
+                  type="text"
+                  id="proj_empid"
+                  name="empid"
+                  value={projectFormData.empid}
+                  onChange={handleProjectChange}
+                  disabled={loading}
+                  placeholder="e.g. E102"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="proj_role">Role</label>
+                <input
+                  type="text"
+                  id="proj_role"
+                  name="role"
+                  value={projectFormData.role}
+                  onChange={handleProjectChange}
+                  disabled={loading}
+                  placeholder="e.g. fullstack dev"
+                />
+              </div>
+              
+              <div className="input-group">
+                <label htmlFor="proj_task">Task</label>
+                <input
+                  type="text"
+                  id="proj_task"
+                  name="task"
+                  value={projectFormData.task}
+                  onChange={handleProjectChange}
+                  disabled={loading}
+                  placeholder="e.g. fullstack"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="proj_deadline">Deadline</label>
+                <input
+                  type="date"
+                  id="proj_deadline"
+                  name="deadline"
+                  value={projectFormData.deadline}
+                  onChange={handleProjectChange}
+                  disabled={loading}
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="submit-btn"
+                disabled={loading}
+              >
+                {loading ? 'Creating...' : 'Create Project'}
+              </button>
+            </form>
+          </div>
+        )}
 
         {showForm && (
           <div className="form-container">
             <h3>Add New Employee</h3>
             
             <form onSubmit={handleSubmit} className="add-employee-form">
-              {error && <div className="alert error-alert">{error}</div>}
-              {success && <div className="alert success-alert">{success}</div>}
+              {employeeError && <div className="alert error-alert">{employeeError}</div>}
+              {employeeSuccess && <div className="alert success-alert">{employeeSuccess}</div>}
 
               <div className="input-group">
                 <label htmlFor="name">Name</label>
@@ -177,6 +397,9 @@ const AdminDashboard = () => {
             </form>
           </div>
         )}
+
+        {showEmployees && <AllEmployees />}
+        {showProjects && <AllProjects />}
       </main>
     </div>
   );

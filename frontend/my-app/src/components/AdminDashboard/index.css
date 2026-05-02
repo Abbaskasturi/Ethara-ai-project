@@ -56,6 +56,16 @@
 
 .admin-actions {
   margin-bottom: 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.view-btn {
+  background-color: #17a2b8;
+}
+
+.view-btn:hover {
+  background-color: #138496;
 }
 
 .action-btn {
