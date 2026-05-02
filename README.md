@@ -61,7 +61,10 @@ The Team Task Manager is a full-stack web application designed to streamline pro
 6. Setup & Run Instructions (Local)
 -----------------------------------
 1. Clone the repository.
-2. Navigate to the frontend directory: `cd frontend/my-app`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm run dev`
-5. The application will be running at http://localhost:5173
+2. first navigate backend directory : `cd Backend`
+3. install dependencies: `npm install`
+4. run server : `nodemon server.js`
+5. Navigate to the frontend directory: `cd frontend/my-app`
+6. Install dependencies: `npm install`
+7. Start the development server: `npm run dev`
+8. The application will be running at http://localhost:5173
